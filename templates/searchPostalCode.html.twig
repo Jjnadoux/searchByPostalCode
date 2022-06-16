@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Home' %}
+
+{% block body %}
+<div class="container">
+        <div class="mb-3">
+        <form action="{{ path('home') }}" method="get">
+            <label for="postalCode" class="form-label">Saisissez un code postal</label>
+            <input type="text" pattern="[0-9]{5}" class="form-control" id="postalCode" name="postalCode" placeholder="code postal" required>
+        <button class="btn btn-primary" type="submit" style="margin-top: 15px;">Validez</button>
+        </form>
+        </div>
+        
+        {% if schoolList is defined %}
+        <div style="margin-top:20px;">
+            {% if schoolList|length != 0 %}
+                <h3>{{schoolList|length}} établissement{% if schoolList|length > 1 %}s{% endif %} scolaire{% if schoolList|length > 1 %}s{% endif %} trouvé{% if schoolList|length > 1 %}s{% endif %} pour le code postal {{codePostal}}</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <th>Nom de l'établissement</th>
+                        <th> Public ou privé </th>
+                        <th> Code UAI </th>
+                    </thead>
+                    <tbody>
+                        {% for school in schoolList %}
+                            <tr>
+                                <td>{{ school['appellation_officielle'] }}</td>
+                                <td>{{ school['secteur_public_prive_libe'] }}</td>
+                                <td>{{ school['numero_uai']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+            <h3> Aucun résultat pour le code postal {{codePostal}}</h3>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+{% endblock %} 
